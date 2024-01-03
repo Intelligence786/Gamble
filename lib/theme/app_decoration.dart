@@ -14,6 +14,11 @@ class AppDecoration {
   static BoxDecoration get fillWhiteA => BoxDecoration(
         color: appTheme.whiteA700.withOpacity(0.7),
       );
+  static BoxDecoration get fillWhiteOnBoard => BoxDecoration(
+    color: appTheme.whiteA700.withOpacity(0.7),
+
+    borderRadius: BorderRadius.circular(10)
+  );
 
   // Gradient decorations
   static BoxDecoration get gradientBlackToBlack => BoxDecoration(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../core/app_export.dart';
 
 /// A collection of pre-defined text styles for customizing text appearance,
@@ -10,14 +11,23 @@ class CustomTextStyles {
   static get titleLargeBold => theme.textTheme.titleLarge!.copyWith(
         fontWeight: FontWeight.w700,
       );
+
   static get titleMediumGray90001 => theme.textTheme.titleMedium!.copyWith(
         color: appTheme.gray90001,
       );
+
   static get titleMediumWhiteA700 => theme.textTheme.titleMedium!.copyWith(
         color: appTheme.whiteA700,
         fontSize: 18.fSize,
         fontWeight: FontWeight.w900,
       );
+
+  static get titleMediumWhiteA700Black => theme.textTheme.titleSmall!.copyWith(
+        color: appTheme.gray900,
+        fontSize: 18.fSize,
+        fontWeight: FontWeight.w900,
+      );
+
   static get titleMediumWhiteA700_1 => theme.textTheme.titleMedium!.copyWith(
         color: appTheme.whiteA700,
       );

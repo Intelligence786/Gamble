@@ -41,7 +41,7 @@ List<RewardItem> rewards = [
   ),
   RewardItem(
     name: 'Oops!',
-    icon:   Align(
+    icon: Align(
       alignment: Alignment.center,
       child: Text(
         'Nothing...',
@@ -55,9 +55,22 @@ List<RewardItem> rewards = [
 class SlotMachineRewardsPull {
   static RewardItem getRewardItem(List<int> indexes) {
     int first = indexes[0];
-    if (indexes.contains((element) => element != first)) {
+    bool isReward = false;
+    for (var index in indexes) {
+      if (first == index) {
+          isReward = true;
+      }
+      else
+        {
+          isReward = false;
+          break;
+        }
+    }
+    if (isReward) {
+      print('reward');
       return rewards[3];
     } else {
+      print('nothing');
       return rewards[4];
     }
   }

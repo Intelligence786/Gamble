@@ -2,11 +2,16 @@ import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/app_export.dart';
 
 var globalMessengerKey = GlobalKey<ScaffoldMessengerState>();
-void main() {
+int initScreen = 0;
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  initScreen = await prefs.getInt("initScreen") ?? 0;
+  await prefs.setInt("initScreen", 1);
   Future.wait([
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -49,7 +54,9 @@ class MyApp extends StatelessWidget {
                     '',
                   ),
                 ],
-                initialRoute: AppRoutes.initialRoute,
+                initialRoute: initScreen == 0
+                    ? AppRoutes.onBoardingRoute
+                    : AppRoutes.initialRoute,
                 routes: AppRoutes.routes,
               );
             },
