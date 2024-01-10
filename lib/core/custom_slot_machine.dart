@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:gamble/core/app_export.dart';
 
 class SlotMachineController {
@@ -48,6 +50,7 @@ class SlotMachine extends StatefulWidget {
 
 class _SlotMachineState extends State<SlotMachine> {
   late SlotMachineController _slotMachineController;
+
   Map<int, _ReelController> _reelControllers = {};
   List<RollItem> _actualRollItems = [];
   List<int> _resultIndexes = [];
@@ -198,12 +201,14 @@ class __ReelState extends State<_Reel> {
   late Timer timer;
   late _ReelController _laneController;
   final _scrollController = FixedExtentScrollController(initialItem: 0);
+  final _sliderController = CarouselController();
   int counter = 0;
   List<RollItem> _actualRollItems = [];
 
   @override
   void initState() {
     super.initState();
+
     _actualRollItems = widget.rollItems;
 
     if (widget.shuffle) _actualRollItems.shuffle();
@@ -218,41 +223,57 @@ class __ReelState extends State<_Reel> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Future.value(0),
-        builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
-          return Container(
-            color: Colors.white,
-            width: widget.reelWidth,
-            height: widget.reelHeight,
-            child: Stack(
-              children: [
-                Container(
-                  decoration: AppDecoration.gradientVinetka,
-                ),
-                ListWheelScrollView.useDelegate(
-                  controller: _scrollController,
-                  itemExtent: widget.itemExtent,
-                  physics: FixedExtentScrollPhysics(),
-                  childDelegate: ListWheelChildLoopingListDelegate(
-                    children: _actualRollItems.map<Widget>((item) {
-                      return SizedBox(
-                        width: widget.reelWidth,
-                        height: widget.itemExtent,
-                        child: item.child,
-                      );
-                    }).toList(),
+      future: Future.value(0),
+      builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+        return Container(
+          color: Colors.white,
+          width: widget.reelWidth,
+          height: widget.reelHeight,
+          child: Stack(
+            children: [
+              Container(
+                decoration: AppDecoration.gradientVinetka,
+              ),
+              CarouselSlider.builder(
+                disableGesture: true,
+                carouselController: _sliderController,
+                options: CarouselOptions(height: 400.v, scrollDirection: Axis.vertical,viewportFraction: 0.6),
+                itemCount: _actualRollItems.length,
+                itemBuilder:
+                    (BuildContext context, int itemIndex, int pageViewIndex) =>
+                        Container(
+                  child: SizedBox(
+                    width: widget.reelWidth,
+                    height: widget.itemExtent,
+                    child: _actualRollItems[itemIndex].child,
                   ),
                 ),
-              ],
-            ),
-          );
-        },);
+              ),
+           /*   ListWheelScrollView.useDelegate(
+                controller: _scrollController,
+                itemExtent: widget.itemExtent,
+                physics: FixedExtentScrollPhysics(),
+                childDelegate: ListWheelChildLoopingListDelegate(
+                  children: _actualRollItems.map<Widget>((item) {
+                    return SizedBox(
+                      width: widget.reelWidth,
+                      height: widget.itemExtent,
+                      child: item.child,
+                    );
+                  }).toList(),
+                ),
+              ),*/
+            ],
+          ),
+        );
+      },
+    );
   }
 
   _start() {
     counter = 0;
     timer = Timer.periodic(Duration(milliseconds: 50), (timer) {
-      _scrollController.animateToItem(
+      _sliderController.animateToPage(
         counter,
         duration: Duration(milliseconds: 50),
         curve: Curves.linear,
@@ -271,7 +292,7 @@ class __ReelState extends State<_Reel> {
         (_actualRollItems.length - hitItemIndex) -
         1;
 
-    _scrollController.animateToItem(
+    _sliderController.animateToPage(
       counter - addCount,
       duration: const Duration(milliseconds: 750),
       curve: Curves.decelerate,

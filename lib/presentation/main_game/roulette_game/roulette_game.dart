@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:gamble/core/app_export.dart';
-import 'package:gamble/widgets/custom_elevated_button.dart';
 
 import '../additional_widgets/custom_bottom_button.dart';
 import '../game_bloc/game_bloc.dart';
@@ -26,7 +25,9 @@ class _RouletteGameState extends State<RouletteGame>
     // TODO: implement initState
     super.initState();
   }
-  int rand =0;
+
+  int rand = 0;
+
   @override
   Widget build(BuildContext context) {
     final images = <String>[
@@ -47,12 +48,11 @@ class _RouletteGameState extends State<RouletteGame>
       backgroundColor: Colors.transparent,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
-
         //padding: EdgeInsets.only(top: 100.h),
         height: 150.h,
         width: 150.h,
         child: CustomBottomButton(
-          buttonType: ButtonType.spin ,
+          buttonType: ButtonType.spin,
           onTap: () {
             rand = Fortune.randomInt(0, images.length);
             print(rand);
@@ -60,7 +60,7 @@ class _RouletteGameState extends State<RouletteGame>
           },
         ),
       ),
-      body:  Container(
+      body: Container(
         decoration: AppDecoration.fillBlack,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -69,7 +69,6 @@ class _RouletteGameState extends State<RouletteGame>
               padding: EdgeInsets.only(right: 50.h),
               child: Align(
                 alignment: Alignment.topRight,
-
                 child: CustomImageView(
                   imagePath: ImageConstant.imgClose,
                   onTap: () {
@@ -83,10 +82,10 @@ class _RouletteGameState extends State<RouletteGame>
             Stack(
               alignment: Alignment.topCenter,
               children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 0.h),
-                  child: _backgroundGrass(context),
-                ),
+                SizedBox(
+                    width: 400.h,
+                    height: 400.v,
+                    child: _backgroundGrass(context)),
                 SizedBox(
                   width: 400.h,
                   height: 400.v,
@@ -97,7 +96,11 @@ class _RouletteGameState extends State<RouletteGame>
                       alignment: AlignmentDirectional.center,
                       children: [
                         FortuneWheel(
-                          onAnimationEnd: () => {context.read<GameBloc>().add(ClaimRouletteReward(rand))},
+                          onAnimationEnd: () => {
+                            context
+                                .read<GameBloc>()
+                                .add(ClaimRouletteReward(rand))
+                          },
                           indicators: [FortuneIndicator(child: Container())],
                           animateFirst: false,
                           selected: selected.stream,

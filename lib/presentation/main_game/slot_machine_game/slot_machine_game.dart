@@ -25,6 +25,7 @@ class _SlotMachineGameState extends State<SlotMachineGame>
   @override
   void initState() {
     super.initState();
+
     setState(() {
       rollItems = [
         RollItem(
@@ -121,21 +122,16 @@ class _SlotMachineGameState extends State<SlotMachineGame>
     });
   }
 
-  @override
+/*  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    precacheImage(Image.asset(ImageConstant.imgApple).image, context);
-    precacheImage(Image.asset(ImageConstant.imgCherry).image, context);
-    precacheImage(Image.asset(ImageConstant.imgBanana).image, context);
-    precacheImage(Image.asset(ImageConstant.imgBlackberry).image, context);
-    precacheImage(Image.asset(ImageConstant.imgStrawberry).image, context);
-    precacheImage(Image.asset(ImageConstant.imgMango).image, context);
-    precacheImage(Image.asset(ImageConstant.imgPear).image, context);
+    //precacheImage(Image.asset(ImageConstant.imgApple).image, context);
+    //precacheImage(Image.asset(ImageConstant.imgCherry).image, context);
   }
 
   void onButtonTap() {
     //_controller.stopRandomly();
-  }
+  }*/
 
   stopRandomly() async {
     // Инициируем остановку каждого колеса с рандомной задержкой
@@ -223,6 +219,7 @@ class _SlotMachineGameState extends State<SlotMachineGame>
                           rollItems: rollItems,
                           onCreated: (controller) {
                             _controller = controller;
+
                           },
                           onFinished: (resultIndexes) async {
                             await Future.delayed(Duration(seconds: 1));
